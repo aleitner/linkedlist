@@ -1,15 +1,15 @@
-package singlylinkedlist_test
+package singly_test
 
 import (
-	"ll/singlylinkedlist"
+	"linkedlist/singly"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func SinglyLinkedListTest(t *testing.T) {
+func TestSinglyLinkedList(t *testing.T) {
 	id := 1
-	singly := singlylinkedlist.New(1)
+	singly := singly.NewSinglyList(1)
 	require.Equal(t, id, singly.ID)
 
 	err := singly.Add("item #1")
@@ -20,6 +20,12 @@ func SinglyLinkedListTest(t *testing.T) {
 	require.NoError(t, err)
 
 	currentItem, err := singly.Current()
+	require.Error(t, err)
+
+	err = singly.Beginning()
+	require.NoError(t, err)
+
+	currentItem, err = singly.Current()
 	require.NoError(t, err)
 	require.Equal(t, currentItem, "item #1")
 

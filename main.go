@@ -1,30 +1,30 @@
-package main
+package linkedlist
 
 import (
 	"fmt"
-	"ll/singlylinkedlist"
+	"linkedlist/singly"
 )
 
 func main() {
 	fmt.Println("Creating List...")
-	singly := singlylinkedlist.New(1337)
+	s := singly.NewSinglyList(1337)
 
 	fmt.Println("Adding item...")
-	if err := singly.Add("item #1"); err != nil {
+	if err := s.Add("item #1"); err != nil {
 		panic(err)
 	}
 
 	fmt.Println("Adding item...")
-	if err := singly.Add("item #2"); err != nil {
+	if err := s.Add("item #2"); err != nil {
 		panic(err)
 	}
 
 	fmt.Println("Adding item...")
-	if err := singly.Add("item #3"); err != nil {
+	if err := s.Add("item #3"); err != nil {
 		panic(err)
 	}
 
-	currentItem, err := singly.Current()
+	currentItem, err := s.Current()
 	if err != nil {
 		panic(err)
 	}
@@ -32,12 +32,12 @@ func main() {
 	fmt.Println("Current item: ", currentItem)
 
 	fmt.Println("Moving Next...")
-	currentItem, err = singly.Next()
+	currentItem, err = s.Next()
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println("Current item: ", currentItem)
 
-	fmt.Println("Total List:\n", singly)
+	fmt.Println("Total List:\n", s)
 }

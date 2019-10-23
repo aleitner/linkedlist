@@ -1,4 +1,4 @@
-module ll
+module linkedlist
 
 go 1.13
 

@@ -1,4 +1,4 @@
-package singlylinkedlist
+package singly
 
 import (
 	"errors"
@@ -6,26 +6,26 @@ import (
 	"sync"
 )
 
-type Singly struct {
-	ID int
-	head *Item
-	current *Item
-	mtx sync.Mutex
+type SinglyList struct {
+	ID      int
+	head    *SinglyItem
+	current *SinglyItem
+	mtx     sync.Mutex
 }
 
-type Item struct {
+type SinglyItem struct {
 	data string
-	next *Item
+	next *SinglyItem
 }
 
-func New(id int) *Singly {
-	return &Singly{
+func NewSinglyList(id int) *SinglyList {
+	return &SinglyList{
 		ID: id,
 	}
 }
 
-func (s *Singly) Add(data string) error {
-	item := &Item{
+func (s *SinglyList) Add(data string) error {
+	item := &SinglyItem{
 		data: data,
 	}
 
@@ -43,14 +43,10 @@ func (s *Singly) Add(data string) error {
 		nodeToCheck.next = item
 	}
 
-	if s.current == nil {
-		s.current = s.head
-	}
-
 	return nil
 }
 
-func (s Singly) Current() (string, error) {
+func (s SinglyList) Current() (string, error) {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 	if s.current == nil {
@@ -61,12 +57,16 @@ func (s Singly) Current() (string, error) {
 	return s.current.data, nil
 }
 
-func (s Singly) Next() (string, error) {
+func (s *SinglyList) Next() (string, error) {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 	if s.current == nil {
 		// NB: We could also just set s.current to s.head
 		return "", errors.New("No current item")
+	}
+
+	if s.current.next == nil{
+		return "", errors.New("No more items in list")
 	}
 
 	s.current = s.current.next
@@ -74,21 +74,21 @@ func (s Singly) Next() (string, error) {
 	return s.current.data, nil
 }
 
-func (s Singly) Beginning() error {
+func (s *SinglyList) Beginning() error {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 	s.current = s.head
 	return nil
 }
 
-func (s Singly) String() string {
+func (s SinglyList) String() string {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 
 	stringVal := "[ "
 
 	item := s.head
-	for  {
+	for {
 		stringVal = fmt.Sprintf("%s \"%s\",", stringVal, item.data)
 
 		if item.next == nil {
